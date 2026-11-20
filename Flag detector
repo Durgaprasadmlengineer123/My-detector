@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+<head><title>FLAG DETECTOR</title>
+<style>body{text-align:center;font-family:Arial;background:#fff3e0;padding:20px}h1{font-size:30px}h2{font-size:26px}</style>
+</head>
+<body>
+<h1>🚩 FLAG DETECTOR 🌍</h1>
+<p><b>Banaya hai: TUNE! 😎</b></p>
+<h2 id="result">📸 Kisi bhi Desh ka Flag daalo!</h2>
+<input type="file" accept="image/*" onchange="check(event)">
+<br><br><div id="box"></div>
+<canvas id="c" style="display:none"></canvas>
+<script>
+function check(e){
+ let img=document.createElement("img"); img.src=URL.createObjectURL(e.target.files[0]); img.width=300;
+ document.getElementById("box").innerHTML=""; document.getElementById("box").appendChild(img);
+ document.getElementById("result").innerHTML="🤔 Rang check kar raha hu...";
+ img.onload=()=>{
+  let c=document.getElementById("c"); let ctx=c.getContext("2d"); c.width=img.naturalWidth; c.height=img.naturalHeight;
+  ctx.drawImage(img,0,0);
+  let d=ctx.getImageData(0,0,c.width,c.height).data;
+  let col={red:0,white:0,blue:0,green:0,saffron:0,yellow:0,black:0};
+  for(let i=0;i<d.length;i+=8){
+   let r=d[i],g=d[i+1],b=d[i+2];
+   if(r>200&&g>200&&b>200) col.white++;
+   else if(r>200&&g>100&&g<200&&b<100) col.saffron++;
+   else if(r>190&&g>180&&b<100) col.yellow++;
+   else if(r>120&&r>g+40&&r>b+40) col.red++;
+   else if(g>50&&g>r+20&&g>b+10) col.green++;
+   // BLUE FIX! Ab Dark Blue bhi pakdega! 60 -> 40 kar diya!
+   else if(b>40&&b>r+10&&b>g-20) col.blue++;
+   else if(r<70&&g<70&&b<70) col.black++;
+  }
+  let total=col.red+col.white+col.blue+col.green+col.saffron+col.yellow+col.black;
+  if(total==0) total=1;
+  let p=k=>Math.round(col[k]/total*100);
+  let out="Samajh nahi aaya! R:"+p('red')+" W:"+p('white')+" B:"+p('blue')+" G:"+p('green')+" Y:"+p('yellow');
+  // BRAZIL ko sabse PEHLE! Green 60% se zyada + thoda sa Blue!
+  if(p('green')>60 && p('blue')>1) out="🇧🇷 YE BRAZIL KA FLAG HAI! Green + Yellow Diamond + Blue Globe!";
+  else if(p('blue')>20 && p('white')>20 && p('red')>20) out="🇫🇷 YE FRANCE KA FLAG HAI! Blue-White-Red!";
+  else if(p('red')>25 && p('white')>25 && p('blue')>10 && p('blue')<=20) out="🇺🇸 YE USA KA FLAG HAI! Red-White-Blue! Stars & Stripes!";
+  else if(p('green')>40 && p('white')>15) out="🇵🇰 YE PAKISTAN KA FLAG HAI! Green + White! Chand-Tara!";
+  else if(p('saffron')>15 && p('white')>15 && p('green')>10) out="🇮🇳 YE INDIA KA FLAG HAI! Saffron-White-Green! JAI HIND! "+p('saffron')+"% Saffron";
+  else if(p('white')>70 && p('red')>5 && p('red')<25) out="🇯🇵 YE JAPAN KA FLAG HAI! White + Red Circle!";
+  else if(p('black')>20 && p('red')>15 && p('yellow')>15) out="🇩🇪 YE GERMANY KA FLAG HAI! Black-Red-Yellow!";
+  else if(p('red')>65) out="🇨🇳 YE CHINA KA FLAG HAI! Red + Yellow Star!";
+  else if(p('blue')>35 && p('red')>10 && p('white')>10) out="🇬🇧 YE UK KA FLAG HAI!";
+  else if(p('green')>20 && p('white')>20 && p('red')>20) out="🇮🇹 YE ITALY KA FLAG HAI!";
+  document.getElementById("result").innerHTML=out;
+ }
+}
+</script>
+</body>
+</html>
