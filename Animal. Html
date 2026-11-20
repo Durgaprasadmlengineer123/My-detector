@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html>
+<head><title>ANIMAL DETECTOR</title>
+<style>body{text-align:center;font-family:Arial;background:#fff3cd;padding:20px}h1{font-size:32px}h2{font-size:23px}.box{background:white;padding:15px;border-radius:15px;margin:10px}button{font-size:18px;padding:10px;margin:4px;border:none;border-radius:12px;background:#e17055;color:white}input{font-size:20px;padding:10px;width:85%} .sym{background:#00b894} .all{background:#6c5ce7}</style>
+</head>
+<body>
+<h1>🦁 ANIMAL DETECTOR 🐘</h1>
+<p><b>Banaya hai: TUNE! 😎 Ab Janwar Pehchano!</b></p>
+
+<div class="box">
+<h2>🔍 Naam likh ke pata karo!</h2>
+<input id="name" placeholder="Sher, Haathi, Kutta..." oninput="find()">
+<br><br><button onclick="find()">PATA KARO!</button>
+<h2 id="result1">Yaha jawab aayega!</h2>
+<p id="count"></p>
+</div>
+
+<div class="box">
+<h2>🌍 Kaha rehta hai? TAP karo!</h2>
+<button class="sym" onclick="show('jungle')">🌳 Jungle Wala</button>
+<button class="sym" onclick="show('pet')">🏠 Ghar Wala / Pet</button>
+<button class="sym" onclick="show('pani')">🌊 Pani Wala</button>
+<button class="sym" onclick="show('bird')">🦅 Udne Wala</button>
+<button class="sym" onclick="show('khatarnak')">😱 Khatarnak Wala</button>
+<h2 id="result2">Yaha janwar ka naam aayega!</h2>
+</div>
+
+<div class="box">
+<h2>📋 Sab Janwar - TAP karo!</h2>
+<div id="allbtn"></div>
+</div>
+<p><b>⚠️ Janwaro ko chhedo mat! Door se dekho!</b></p>
+
+<script>
+let med={
+"sher":"🦁 SHER - Jungle ka RAJA! Dahadta hai! Garjta hai! Sabse taakatwar!",
+"haathi":"🐘 HAATHI - Sabse BADA janwar! Soond se pani peeta hai! Buddhi wala!",
+"kutta":"🐶 KUTTA - Sabse Wafadar! Bhau-Bhau karta hai! Ghar ki rakhwali karta hai!",
+"billi":"🐱 BILLI - Meow-Meow! Doodh peeti hai! Chuha pakadti hai!",
+"gai":"🐄 GAI - Doodh deti hai! Hamari Maa jaisi!",
+"bhains":"🐃 BHAINS - Kaala rang! Doodh deti hai!",
+"bakri":"🐐 BAKRI - Me-Me karti hai! Ghaas khati hai!",
+"ghoda":"🐴 GHODA - Tez daudta hai! Race me jeet ta hai!",
+"gadha":"🐴 GADHA - Bojh uthata hai! Dheere chalta hai!",
+"bandar":"🐵 BANDAR - Ped pe chadhta hai! Kela khata hai! Masti karta hai!",
+"bhalu":"🐻 BHALU - Shahad khata hai! Mota-Mota!",
+"cheetah":"🐆 CHEETAH - Sabse TEZ daudta hai! 100 km/hr!",
+"tiger":"🐯 TIGER - Sher jaisa! Orange-Kaala! India ka National Animal!",
+"chuha":"🐭 CHUHA - Chhota sa! Billi se darta hai!",
+"khargosh":"🐰 KHARGOSH - Gajar khata hai! Lambi kaan wala! Uchhalta hai!",
+"hiran":"🦌 HIRAN - Tez daudta hai! Seengh wala!",
+"lomdi":"🦊 LOMDI - Chalak! Chalu! Kahani me sabko ullu banati hai!",
+"bhediya":"🐺 BHEDIYA - Raat me Howl karta hai! Aauuuu!",
+"saanp":"🐍 SAANP - Rengta hai! Zeher wala! Door raho!",
+"magarmach":"🐊 MAGARMACH - Pani me rehta hai! Bade daant wala!",
+"kachhua":"🐢 KACHHUA - Dheere chalta hai! Race jeeta tha! Kavach wala!",
+"mendak":"🐸 MENDAK - Tar-Tar karta hai! Baarish me aata hai!",
+"machli":"🐟 MACHLI - Pani me rehti hai! Tairti hai!",
+"shark":"🦈 SHARK - Samundar ki Rani! Bade daant wali!",
+"whale":"🐋 WHALE - Sabse BADI machli! Pani se fountain nikalti hai!",
+"dolphin":"🐬 DOLPHIN - Smart wali machli! Khelti hai!",
+"octopus":"🐙 OCTOPUS - 8 haath wala!",
+"penguin":"🐧 PENGUIN - Barf me rehta hai! Chalna funny hai!",
+"ullu":"🦉 ULLU - Raat me jagta hai! Buddhi wala!",
+"kauwa":"🐦‍⬛ KAUWA - Kaaw-Kaaw! Kaala! Chalak!",
+"kabutar":"🕊️ KABUTAR - Shanti ka Symbol! Gutur-Gu!",
+"tota":"🦜 TOTA - Bolta hai! Mithu-Mithu! Hara rang!",
+"mor":"🦚 MOR - National Bird! Neela! Nachta hai! Sundar!",
+"murghi":"🐔 MURGHI - Anda deti hai! Kukdu-Ku!",
+"batakh":"🦆 BATAKH - Pani me tairti hai! Quack-Quack!",
+"owl":"🦉 OWL - Ullu jaisa! Raat wala!",
+"chidiya":"🐦 CHIDIYA - Choti si! Cheh-Cheh karti hai!",
+"chamgadad":"🦇 CHAMGADAD - Raat me udta hai! Ulta latakta hai!",
+"chipkali":"🦎 CHIPKALI - Deewar pe chalti hai! Poonch kaat deti hai!",
+"girgit":"🦎 GIRGIT - Rang badalta hai! Chameleon!",
+"makdi":"🕷️ MAKDI - Jaal bunti hai! 8 pair wali!",
+"tiddi":"🦗 TIDDI - Uchhalti hai! Khet kha jati hai!",
+"titli":"🦋 TITLI - Butterfly! Rang-Birangi! Phool pe baithti hai!",
+"madhumakhi":"🐝 MADHUMAKHI - Shahad banati hai! Kaat ti hai!",
+"keeda":"🐛 KEEDA - Rengta hai!",
+"sheru":"🐶 SHERU - Kutta jaisa! Wafadar!",
+"billu":"🐱 BILLU - Billi jaisa!",
+"oont":"🐪 OONT - Registan ka Jahaaz! Pani bina chalta hai!",
+"zebra":"🦓 ZEBRA - Kaala-Safed! Ghode jaisa!",
+"giraffe":"🦒 GIRAFFE - Sabse LAMBI gardan! Ped ke patte khata hai!",
+"kangaroo":"🦘 KANGAROO - Uchhalta hai! Bachha pet me rakhta hai!",
+"panda":"🐼 PANDA - Baans khata hai! Cute sa!",
+"seal":"🦭 SEAL - Pani me! Ball se khelta hai!",
+"starfish":"⭐ STARFISH - Taara jaisa! Pani me!",
+"kekda":"🦀 KEKDA - Crab! Tedha chalta hai! Pakadta hai!",
+"jhinga":"🦐 JHINGA - Chhota sa! Pani me!",
+"saand":"🐂 SAAND - Taakatwar! Gussa wala!",
+"suuar":"🐷 SUUAR - Keechad me! Oink-Oink!",
+"gadha2":"🫏 GADHA - Bojh wala!",
+"hathi":"🐘 HATHI - Haathi jaisa! Bada!",
+"lion":"🦁 LION - Sher jaisa! Jungle ka Raja!"
+};
+function find(){
+ let n=document.getElementById("name").value.toLowerCase().trim();
+ if(n==""){ document.getElementById("result1").innerHTML="Naam to likho pehle! 😅"; return; }
+ let found="Nahi mila! Neeche wale button me se dhoondho!";
+ for(let k in med){ if(n.includes(k) || k.includes(n)) found=med[k]; }
+ document.getElementById("result1").innerHTML=found;
+}
+function find2(n){ document.getElementById("name").value=n; document.getElementById("result1").innerHTML=med[n]; window.scrollTo(0,0); }
+function show(s){
+ let t="";
+ if(s=='jungle') t="🌳 JUNGLE wale: <b>Sher, Tiger, Haathi, Bandar, Bhalu, Cheetah, Hiran, Lomdi</b>";
+ if(s=='pet') t="🏠 GHAR wale: <b>Kutta, Billi, Gai, Bakri, Ghoda, Khargosh, Tota, Murghi</b>";
+ if(s=='pani') t="🌊 PANI wale: <b>Machli, Shark, Whale, Dolphin, Magarmach, Kachhua, Mendak</b>";
+ if(s=='bird') t="🦅 UDNE wale: <b>Mor, Tota, Ullu, Kauwa, Kabutar, Chidiya, Chamgadad</b>";
+ if(s=='khatarnak') t="😱 KHATARNAK wale: <b>Sher, Tiger, Saanp, Magarmach, Shark, Bhediya</b> - Inse DOOR raho!";
+ document.getElementById("result2").innerHTML=t;
+}
+let box=document.getElementById("allbtn");
+for(let k in med){ let b=document.createElement("button"); b.className="all"; b.innerText=k.toUpperCase(); b.onclick=()=>find2(k); box.appendChild(b); }
+document.getElementById("count").innerHTML="Total: "+Object.keys(med).length+" Janwar! 🔥";
+</script>
+</body>
+</html>
