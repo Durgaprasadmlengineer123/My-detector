@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html>
+<head><title>MEDICINE DETECTOR 100</title>
+<style>body{text-align:center;font-family:Arial;background:#e0f7fa;padding:20px}h1{font-size:32px}h2{font-size:23px}.box{background:white;padding:15px;border-radius:15px;margin:10px}button{font-size:18px;padding:10px;margin:4px;border:none;border-radius:12px;background:#00b894;color:white}input{font-size:20px;padding:10px;width:85%} .sym{background:#0984e3} .all{background:#6c5ce7}</style>
+</head>
+<body>
+<h1>💊 MEDICINE DETECTOR - 100 💊</h1>
+<p><b>Banaya hai: TUNE! 😎 Ab 100 Dawaiyan!</b></p>
+
+<div class="box">
+<h2>🔍 Naam likh ke pata karo!</h2>
+<input id="name" placeholder="100 me se koi bhi... Crocin, Betadine..." oninput="find()">
+<br><br><button onclick="find()">PATA KARO!</button>
+<h2 id="result1">Yaha jawab aayega!</h2>
+<p id="count">Total: 100 Dawaiyan!</p>
+</div>
+
+<div class="box">
+<h2>🤒 Kya hua hai? TAP karo!</h2>
+<button class="sym" onclick="show('bukhar')">🤒 Bukhar</button>
+<button class="sym" onclick="show('sar')">😣 Sar Dard</button>
+<button class="sym" onclick="show('sardi')">🤧 Sardi</button>
+<button class="sym" onclick="show('khansi')">😮‍💨 Khansi</button>
+<button class="sym" onclick="show('pet')">😖 Pet / Gas</button>
+<button class="sym" onclick="show('chot')">🩹 Chot</button>
+<button class="sym" onclick="show('loose')">💧 Loose Motion</button>
+<button class="sym" onclick="show('vitamin')">💪 Vitamin</button>
+<h2 id="result2">Yaha dawai ka naam aayega!</h2>
+</div>
+
+<div class="box">
+<h2>📋 Sab 100 Dawaiyan - TAP karo!</h2>
+<div id="allbtn"></div>
+</div>
+<p><b>⚠️ Ye sirf jaankari ke liye hai! Dawai khane se pehle Doctor / Mummy-Papa se pucho!</b></p>
+
+<script>
+let med={
+"crocin":"🤒 CROCN - Bukhar + Sar Dard wali! Paracetamol wali!",
+"dolo":"🤒 DOLO 650 - Bukhar wali! Crocin jaisi!",
+"paracetamol":"🤒 PARACETAMOL - Bukhar + Dard ke liye! Sabse common!",
+"calpol":"🤒 CALPOL - Bachho ke Bukhar wali!",
+"combiflam":"😣 COMBIFLAM - Zyada Dard me! Dant / Sar dard!",
+"ibuprofen":"😣 IBUPROFEN - Dard + Bukhar + Soojan me!",
+"brufen":"😣 BRUFEN - Ibuprofen jaisi! Dard wali!",
+"disprin":"😣 DISPRIN - Sar Dard me! Pani me ghol ke peete hai!",
+"aspirin":"😣 ASPIRIN - Sar Dard + Bukhar me! Doctor ke bina mat lena!",
+"aceclofenac":"😣 ACECLOFENAC - Jodo / Kamar Dard me!",
+"diclofenac":"😣 DICLOFENAC - Dard + Soojan me! Gel bhi aata hai!",
+"voveran":"😣 VOVERAN - Diclofenac jaisi! Dard wali!",
+"saridon":"😣 SARIDON - Sar Dard wali! Teen wali goli!",
+"anacin":"😣 ANACIN - Sar Dard wali!",
+"meftal":"😣 MEFTAL - Pet Dard + Bukhar me!",
+"meftal spas":"😣 MEFTAL SPAS - Pet me Ainthan / Dard me!",
+"cyclopam":"😣 CYCLOPAM - Pet Dard me!",
+"buscopan":"😣 BUSCOPAN - Pet Dard / Ainthan me!",
+"drotin":"😣 DROTIN - Pet Dard me! Ainthan wali!",
+"cetirizine":"🤧 CETIRIZINE - Chheenk, Allergy, Sardi me!",
+"cetzine":"🤧 CETZINE - Cetirizine jaisi! Allergy wali!",
+"allegra":"🤧 ALLEGRA - Allergy / Chheenk me! Fexofenadine wali!",
+"fexofenadine":"🤧 FEXOFENADINE - Allergy wali! Allegra jaisi!",
+"avil":"🤧 AVIL - Allergy, Khujli, Chheenk me! Neend aati hai!",
+"levocetirizine":"🤧 LEVOCETIRIZINE - Allergy wali! Cetirizine se tez!",
+"montair":"🤧 MONTAIR - Allergy + Saans wali! Montelukast wali!",
+"sinerest":"🤧 SINAREST - Sardi, Naak Band, Sar Dard me!",
+"vicks":"🤧 VICKS - Sardi, Naak Band me! Lagane wali!",
+"vaporub":"🤧 VICKS VAPORUB - Sardi me Chhati pe lagate hai!",
+"benadryl":"😮‍💨 BENADRYL - Khansi wali Syrup! Sookhi / Geeli Khansi me!",
+"corex":"😮‍💨 COREX - Khansi wali Syrup! Doctor ke bina mat lena!",
+"ascoril":"😮‍💨 ASCORIL - Khansi + Saans me! Syrup wali!",
+"honitus":"😮‍💨 HONITUS - Khansi wali! Shahad wali Syrup!",
+"strepsils":"😮‍💨 STREPSILS - Gale me Kharaash / Khansi me! Choosne wali!",
+"digene":"😖 DIGENE - Pet me Gas, Jalan, Khatti Dakaar me!",
+"eno":"😖 ENO - Gas / Acidity me! Pani me ghol ke peete hai!",
+"pantoprazole":"😖 PANTOPRAZOLE - Gas / Acidity me! Khali pet wali!",
+"pan":"😖 PAN 40 - Gas wali! Pantoprazole jaisi!",
+"omeprazole":"😖 OMEPRAZOLE - Gas / Acidity me!",
+"omez":"😖 OMEZ - Omeprazole jaisi! Gas wali!",
+"rantac":"😖 RANTAC - Gas / Acidity me! Ranitidine wali!",
+"ranitidine":"😖 RANITIDINE - Gas wali! Rantac jaisi!",
+"aciloc":"😖 ACILOC - Gas / Acidity me!",
+"zantac":"😖 ZANTAC - Gas wali!",
+"pudin hara":"😖 PUDIN HARA - Pet Dard, Gas me! Pudine wali!",
+"hajmola":"😖 HAJMOLA - Hajme wali! Khatti-Mithi goli!",
+"gas o fast":"😖 GAS-O-FAST - Gas me! Pani me gholne wali!",
+"liv 52":"😖 LIV 52 - Liver wali! Hajme ke liye!",
+"duphalac":"😖 DUPHALAC - Kabz me! Pet saaf karne wali Syrup!",
+"cremaffin":"😖 CREMAFFIN - Kabz wali Syrup!",
+"dulcolax":"😖 DULCOLAX - Kabz me!",
+"domperidone":"😖 DOMPERIDONE - Ulti / Gas me!",
+"domstal":"😖 DOMSTAL - Ulti wali! Domperidone jaisi!",
+"ondansetron":"🤢 ONDANSETRON - Ulti rokne wali!",
+"emset":"🤢 EMSET - Ulti wali! Ondansetron jaisi!",
+"avomine":"🤢 AVOMINE - Ulti / Safar me Chakkar me!",
+"ors":"💧 ORS - Loose Motion me pani ki kami ke liye!",
+"electral":"💧 ELECTRAL - ORS jaisa! Pani ki kami me!",
+"azithromycin":"💊 AZITHROMYCIN - Infection wali! Doctor ke bina MAT khana!",
+"azithral":"💊 AZITHRAL - Azithromycin jaisi! Infection wali!",
+"amoxicillin":"💊 AMOXICILLIN - Infection wali! Doctor wali!",
+"augmentin":"💊 AUGMENTIN - Infection wali! Tez wali!",
+"cefixime":"💊 CEFIXIME - Infection / Bukhar wali! Doctor wali!",
+"ciprofloxacin":"💊 CIPROFLOXACIN - Infection wali! Pet / Peshaab wali!",
+"metronidazole":"💊 METRONIDAZOLE - Pet ke Infection / Loose Motion me!",
+"flagyl":"💊 FLAGYL - Metronidazole jaisi! Pet Infection wali!",
+"norflox":"💊 NORFLOX - Loose Motion / Infection me!",
+"ofloxacin":"💊 OFLOXACIN - Infection wali!",
+"doxycycline":"💊 DOXYCYCLINE - Infection wali! Doctor wali!",
+"betadine":"🩹 BETADINE - Chot pe lagate hai! Brown rang ki!",
+"dettol":"🩹 DETTOL - Chot saaf karne + Keetanu maarne wala!",
+"savlon":"🩹 SAVLON - Chot saaf karne wala! Dettol jaisa!",
+"boroline":"🩹 BOROLINE - Phate Honth / Chhoti Chot pe lagate hai!",
+"moov":"💪 MOOV - Kamar / Jodo ke Dard me! Malish wali!",
+"volini":"💪 VOLINI - Dard me! Spray / Gel wali!",
+"iodex":"💪 IODEX - Dard me! Malish wala Balm!",
+"zandu balm":"💪 ZANDU BALM - Sar Dard + Dard me! Balm wali!",
+"amrutanjan":"💪 AMRUTANJAN - Sar Dard me! Balm wali!",
+"soframycin":"🩹 SOFRAMYCIN - Chot / Fode pe lagane wali Cream!",
+"neosporin":"🩹 NEOSPORIN - Chot pe lagane wali Cream!",
+"burnol":"🩹 BURNOL - Jal jaane pe lagate hai!",
+"calamine":"🩹 CALAMINE - Khujli / Ghamori pe lagane wali!",
+"candid":"🩹 CANDID - Fungus / Khujli wali Cream!",
+"clotrimazole":"🩹 CLOTRIMAZOLE - Fungus wali Cream! Candid jaisi!",
+"limcee":"🍊 LIMCEE - Vitamin C wali! Taakat ke liye!",
+"vitamin c":"🍊 VITAMIN C - Taakat + Skin ke liye!",
+"zincovit":"💪 ZINCOVIT - Vitamin wali! Kamzori me!",
+"becosule":"💪 BECOSULE - Vitamin B wali! Kamzori me!",
+"neurobion":"💪 NEUROBION - Vitamin B wali! Haath-Pair ke Dard me!",
+"shelcal":"💪 SHELCAL - Calcium wali! Haddi ke liye!",
+"calcium":"💪 CALCIUM - Haddi + Daant ke liye!",
+"iron":"💪 IRON - Khoon ki kami me!",
+"folic acid":"💪 FOLIC ACID - Khoon badhane wali!",
+"chyawanprash":"💪 CHYAWANPRASH - Taakat wala! Dabur wala!",
+"thyronorm":"💊 THYRONORM - Thyroid wali! Doctor wali!",
+"cetaphil":"🧴 CETAPHIL - Chehre ki Cream / Face Wash!",
+"colgate":"🦷 COLGATE - Daant ki Paste!"
+};
+function find(){
+ let n=document.getElementById("name").value.toLowerCase().trim();
+ if(n==""){ document.getElementById("result1").innerHTML="Naam to likho pehle! 😅"; return; }
+ let found="Nahi mila! Neeche wale button me se dhoondho!";
+ for(let k in med){ if(n.includes(k) || k.includes(n)) found=med[k]; }
+ document.getElementById("result1").innerHTML=found;
+}
+function find2(n){ document.getElementById("name").value=n; document.getElementById("result1").innerHTML=med[n]; window.scrollTo(0,0); }
+function show(s){
+ let t="";
+ if(s=='bukhar') t="🤒 BUKHAR hai? Log <b>Crocin / Dolo / Calpol / Paracetamol</b> ke baare me puchte hai!";
+ if(s=='sar') t="😣 SAR DARD hai? Log <b>Crocin / Combiflam / Saridon / Disprin</b> ke baare me puchte hai!";
+ if(s=='sardi') t="🤧 SARDI hai? Log <b>Vicks / Cetirizine / Sinerest / Allegra</b> ke baare me puchte hai!";
+ if(s=='khansi') t="😮‍💨 KHANSI hai? Log <b>Benadryl / Ascoril / Honitus / Strepsils</b> ke baare me puchte hai!";
+ if(s=='pet') t="😖 PET / GAS hai? Log <b>Digene / Eno / Pan / Omez / Pudin Hara</b> ke baare me puchte hai!";
+ if(s=='chot') t="🩹 CHOT lagi hai? Log <b>Betadine / Dettol / Savlon / Soframycin</b> lagate hai!";
+ if(s=='loose') t="💧 LOOSE MOTION hai? Log <b>ORS / Electral / Norflox</b> ke baare me puchte hai!";
+ if(s=='vitamin') t="💪 VITAMIN chahiye? Log <b>Limcee / Zincovit / Becosule / Shelcal / Chyawanprash</b> ke baare me puchte hai!";
+ document.getElementById("result2").innerHTML=t+"<br><br><small>⚠️ Doctor se puch ke hi dawai lena!</small>";
+}
+let box=document.getElementById("allbtn");
+for(let k in med){ let b=document.createElement("button"); b.className="all"; b.innerText=k.toUpperCase(); b.onclick=()=>find2(k); box.appendChild(b); }
+document.getElementById("count").innerHTML="Total: "+Object.keys(med).length+" Dawaiyan! 🔥";
+</script>
+</body>
+</html>
